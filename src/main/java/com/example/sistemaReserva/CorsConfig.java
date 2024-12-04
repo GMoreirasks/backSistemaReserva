@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Permite todas as rotas
-                        .allowedOrigins("http://localhost:3000") // Permite o frontend local
+                        .allowedOrigins("http://localhost:3000", "https://sistema-de-reserva-front.vercel.app") // Permite os domínios do front-end
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
                         .allowedHeaders("*") // Permite todos os cabeçalhos
                         .allowCredentials(true); // Permite envio de cookies/autenticação
