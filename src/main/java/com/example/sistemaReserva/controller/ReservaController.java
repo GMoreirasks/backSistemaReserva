@@ -1,7 +1,9 @@
 package com.example.sistemaReserva.controller;
 
 import com.example.sistemaReserva.model.Reserva;
+import com.example.sistemaReserva.model.Item;
 import com.example.sistemaReserva.repository.ReservaRepository;
+import com.example.sistemaReserva.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ public class ReservaController {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
     // Listar todas as reservas
     @GetMapping
     public List<Reserva> listarReservas() {
@@ -29,6 +34,13 @@ public class ReservaController {
             return ResponseEntity.badRequest().body("Item e nome do item são obrigatórios");
         }
 
+        // Verifique se o item já existe na base de dados
+        Item itemExistente = itemRepository.findById(reserva.getItem().getId()).orElse(null);
+        if (itemExistente == null) {
+            return ResponseEntity.badRequest().body("O item especificado não existe");
+        }
+
+        reserva.setItem(itemExistente);
         Reserva reservaSalva = reservaRepository.save(reserva);
         return ResponseEntity.ok(reservaSalva);
     }
@@ -70,7 +82,7 @@ public class ReservaController {
     public ResponseEntity<List<Reserva>> listarReservasPorNomeItem(@PathVariable String nome) {
         List<Reserva> reservas = reservaRepository.findByItemNome(nome);
         if (reservas.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Retorna 204 se não houver reservas
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(reservas);
     }

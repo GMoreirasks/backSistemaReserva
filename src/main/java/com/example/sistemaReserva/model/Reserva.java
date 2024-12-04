@@ -1,5 +1,6 @@
 package com.example.sistemaReserva.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import java.time.LocalDateTime;
@@ -11,12 +12,13 @@ public class Reserva {
     private Long id;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.PERSIST) // Adicionei CascadeType.PERSIST aqui
-    @JoinColumn(name = "item_id", nullable = false) // O item é obrigatório para a reserva
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    @JsonBackReference // Impede a serialização em cascata de `Item` na `Reserva`
     private Item item;
 
-    private LocalDateTime dataHora; // Usei LocalDateTime para melhor manipulação de datas e horas
-    private String nomeUsuario; // Alterei para um nome mais descritivo
+    private LocalDateTime dataHora;
+    private String nomeUsuario;
 
     // Getters e Setters
     public Long getId() {
