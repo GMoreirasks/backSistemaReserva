@@ -5,7 +5,7 @@ import com.example.sistemaReserva.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class ReservaController {
 
     // Criar uma nova reserva
     @PostMapping
-    public ResponseEntity<Object> criarReserva(@Valid @RequestBody Reserva reserva) {
+    public ResponseEntity<Object> criarReserva(@RequestBody Reserva reserva) {
         if (reserva.getItem() == null || reserva.getItem().getNome() == null) {
             return ResponseEntity.badRequest().body("Item e nome do item são obrigatórios");
         }
@@ -70,7 +70,7 @@ public class ReservaController {
     public ResponseEntity<List<Reserva>> listarReservasPorNomeItem(@PathVariable String nome) {
         List<Reserva> reservas = reservaRepository.findByItemNome(nome);
         if (reservas.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build(); // Retorna 204 se não houver reservas
         }
         return ResponseEntity.ok(reservas);
     }
