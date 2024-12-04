@@ -6,13 +6,14 @@ import java.util.List;
 
 @Entity
 public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Gerencia a serialização do lado "gerenciado"
+    @JsonManagedReference // Serializa as reservas associadas a um item
     private List<Reserva> reservas;
 
     // Getters e Setters

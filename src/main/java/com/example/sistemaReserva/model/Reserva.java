@@ -1,22 +1,23 @@
 package com.example.sistemaReserva.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 
 @Entity
 public class Reserva {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "item_id", nullable = false)
-    @JsonBackReference // Evita a serialização recursiva
+    @JsonManagedReference // Serializa o item na resposta
     private Item item;
 
-    private LocalDateTime dataHora; // Usei LocalDateTime para melhor manipulação de datas e horas
-    private String nomeUsuario; // Alterei para um nome mais descritivo
+    private LocalDateTime dataHora; // Uso de LocalDateTime para melhor manipulação de datas e horas
+    private String nomeUsuario; // Nome do usuário que realizou a reserva
 
     // Getters e Setters
     public Long getId() {
