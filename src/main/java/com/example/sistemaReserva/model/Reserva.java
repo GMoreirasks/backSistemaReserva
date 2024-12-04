@@ -1,7 +1,7 @@
 package com.example.sistemaReserva.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +13,7 @@ public class Reserva {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "item_id", nullable = false)
-    @JsonManagedReference // Serializa o item na resposta
+    @JsonBackReference // Para evitar a serialização infinita, referenciando o lado "pai"
     private Item item;
 
     private LocalDateTime dataHora; // Uso de LocalDateTime para melhor manipulação de datas e horas

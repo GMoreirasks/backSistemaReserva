@@ -18,8 +18,12 @@ public class ReservaController {
 
     // Listar todas as reservas
     @GetMapping
-    public List<Reserva> listarReservas() {
-        return reservaRepository.findAll();
+    public ResponseEntity<List<Reserva>> listarReservas() {
+        List<Reserva> reservas = reservaRepository.findAll();
+        if (reservas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(reservas);
     }
 
     // Criar uma nova reserva
@@ -29,15 +33,17 @@ public class ReservaController {
             return ResponseEntity.badRequest().body("Item e nome do item são obrigatórios");
         }
 
+        // Salvando a reserva no banco de dados
         Reserva reservaSalva = reservaRepository.save(reserva);
-        return ResponseEntity.ok(reservaSalva);
+        return ResponseEntity.status(201).body(reservaSalva); // Código de status 201 para criação
     }
 
     // Obter uma reserva específica pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<Reserva> obterReserva(@PathVariable Long id) {
         Optional<Reserva> reserva = reservaRepository.findById(id);
-        return reserva.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return reserva.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Atualizar uma reserva existente
@@ -60,7 +66,7 @@ public class ReservaController {
         return reservaRepository.findById(id)
                 .map(reserva -> {
                     reservaRepository.delete(reserva);
-                    return ResponseEntity.noContent().build();
+                    return ResponseEntity.noContent().build(); // Código de status 204 para exclusão
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
