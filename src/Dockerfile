@@ -5,8 +5,9 @@ FROM maven:3.8.5-openjdk-17 as builder
 WORKDIR /app
 
 # Copiar o arquivo pom.xml e a pasta src
-COPY sistemaReserva/pom.xml .
-COPY sistemaReserva/src .
+COPY pom.xml .
+COPY src ./src
+
 
 # Executar o build
 RUN mvn clean install -DskipTests
