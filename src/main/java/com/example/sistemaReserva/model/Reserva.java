@@ -1,8 +1,7 @@
 package com.example.sistemaReserva.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,14 +10,13 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "item_id", nullable = false)
-    @JsonBackReference // Impede a serialização em cascata de `Item` na `Reserva`
+    @JsonBackReference // Evita a serialização recursiva
     private Item item;
 
-    private LocalDateTime dataHora;
-    private String nomeUsuario;
+    private LocalDateTime dataHora; // Usei LocalDateTime para melhor manipulação de datas e horas
+    private String nomeUsuario; // Alterei para um nome mais descritivo
 
     // Getters e Setters
     public Long getId() {
