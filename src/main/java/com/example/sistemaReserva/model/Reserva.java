@@ -1,7 +1,7 @@
 package com.example.sistemaReserva.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,13 +11,13 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @NotNull(message = "Item não pode ser nulo")
+    @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
-    @JsonManagedReference // Serializa o item na resposta
     private Item item;
 
-    private LocalDateTime dataHora; // Uso de LocalDateTime para melhor manipulação de datas e horas
-    private String nomeUsuario; // Nome do usuário que realizou a reserva
+    private LocalDateTime dataHora;
+    private String nomeUsuario;
 
     // Getters e Setters
     public Long getId() {
