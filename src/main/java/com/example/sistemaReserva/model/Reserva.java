@@ -1,23 +1,22 @@
 package com.example.sistemaReserva.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
 public class Reserva {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Item não pode ser nulo")
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @NotNull
+    @ManyToOne(cascade = CascadeType.PERSIST) // Adicionei CascadeType.PERSIST aqui
+    @JoinColumn(name = "item_id", nullable = false) // O item é obrigatório para a reserva
     private Item item;
 
-    private LocalDateTime dataHora;
-    private String nomeUsuario;
+    private LocalDateTime dataHora; // Usei LocalDateTime para melhor manipulação de datas e horas
+    private String nomeUsuario; // Alterei para um nome mais descritivo
 
     // Getters e Setters
     public Long getId() {

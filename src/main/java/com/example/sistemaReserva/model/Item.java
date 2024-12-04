@@ -1,19 +1,19 @@
 package com.example.sistemaReserva.model;
+import java.util.List;
+
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import java.util.List;
 
 @Entity
 public class Item {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Serializa as reservas associadas a um item
+    private String nome;
+    private String descricao;
+
+    @OneToMany(mappedBy = "item")
     private List<Reserva> reservas;
 
     // Getters e Setters
@@ -33,6 +33,14 @@ public class Item {
         this.nome = nome;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public List<Reserva> getReservas() {
         return reservas;
     }
@@ -41,3 +49,5 @@ public class Item {
         this.reservas = reservas;
     }
 }
+
+
